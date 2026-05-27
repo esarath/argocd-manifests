@@ -1,0 +1,17 @@
+{
+  "dashboard": {
+    "title": "POC Overview",
+    "panels": [
+      {
+        "type": "graph",
+        "title": "Pod CPU Usage",
+        "targets": []
+      },
+      {
+        "type": "graph",
+        "title": "Pod Memory Usage",
+        "targets": []
+      }
+    ]
+  }
+}

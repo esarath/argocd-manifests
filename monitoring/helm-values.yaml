@@ -1,0 +1,10 @@
+nginxIngress:
+  controller:
+    replicaCount: 2
+prometheus:
+  server:
+    persistentVolume:
+      enabled: false
+grafana:
+  persistence:
+    enabled: false

@@ -1,0 +1,30 @@
+pipeline {
+  agent any
+  environment {
+    DOCKERHUB = "esarathmails"
+    IMAGE = "${DOCKERHUB}/demo-webapp:${env.BUILD_NUMBER}"
+  }
+  stages {
+    stage('Checkout') {
+      steps { checkout scm }
+    }
+    stage('Build') {
+      steps {
+        sh 'docker build -t $IMAGE .'
+      }
+    }
+    stage('Push') {
+      steps {
+        withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+          sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
+          sh 'docker push $IMAGE'
+        }
+      }
+    }
+    stage('Deploy') {
+      steps {
+        sh 'kubectl set image deployment/demo-webapp demo-webapp=$IMAGE -n default || true'
+      }
+    }
+  }
+}
